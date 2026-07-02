@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Controle financeiro — Print</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    @page { size: landscape; margin: 1cm; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      /* Remove interactive elements */
+      .lv-sidebar { display: none !important; }
+      .lv-header { display: none !important; }
+      .lv-app { display: block !important; }
+      .lv-main { display: block !important; }
+      .lv-content { padding: 0 !important; max-width: 100% !important; }
+
+      /* Remove animations/transitions */
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      /* Page breaks */
+      .lv-kpi-row { break-inside: avoid; }
+      .lv-chart-card { break-inside: avoid; }
+      .lv-table-card { break-inside: avoid; }
+
+      /* Remove hover/interactive styling */
+      .lv-segmented, .lv-btn { cursor: default !important; }
+      .lv-table tbody tr:hover { background: transparent !important; }
+
+      /* Remove toast and drawer */
+      .lv-toast, .lv-overlay, .lv-drawer { display: none !important; }
+
+      /* Keep background colors */
+      .lv-kpi { background: #fff !important; box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+      .lv-chart-card, .lv-table-card { box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+
+      /* Title line */
+      .lv-page-title { break-after: avoid; }
+    }
+
+    /* On-screen: show a print-ready note */
+    body::before {
+      content: 'Versão para impressão — Cmd+P / Ctrl+P para salvar como PDF';
+      display: block;
+      text-align: center;
+      padding: 8px;
+      font: 500 12px/1 var(--font-sans);
+      color: var(--fg-muted);
+      background: var(--slate-100);
+      border-bottom: 1px solid var(--border-default);
+    }
+    @media print {
+      body::before { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="KpiRow.jsx"></script>
+  <script type="text/babel" src="CashflowChart.jsx"></script>
+  <script type="text/babel" src="TransactionsTable.jsx"></script>
+  <script type="text/babel" src="MovementDrawer.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const INITIAL_TX = [
+      { id: 1, date: '14/05 14:32', description: 'Lavagem completa', plate: 'ABC1D23', category: 'Lavagem',   method: 'Pix',      type: 'in',  amount: 120 },
+      { id: 2, date: '14/05 13:15', description: 'Polimento técnico', plate: 'DEF2G34', category: 'Polimento', method: 'Cartão',   type: 'in',  amount: 280 },
+      { id: 3, date: '14/05 11:48', description: 'Reposição shampoo automotivo (12un)', category: 'Insumos', method: 'Dinheiro', type: 'out', amount: 180 },
+      { id: 4, date: '14/05 10:22', description: 'Lavagem simples',   plate: 'GHI3J45', category: 'Lavagem',   method: 'Pix',      type: 'in',  amount: 60 },
+      { id: 5, date: '14/05 09:10', description: 'Lavagem + cera',    plate: 'JKL4M56', category: 'Estética',  method: 'Dinheiro', type: 'in',  amount: 95 },
+      { id: 6, date: '14/05 08:48', description: 'Pagamento funcionário', category: 'Salário', method: 'Pix',  type: 'out', amount: 240 },
+      { id: 7, date: '13/05 18:02', description: 'Higienização interna', plate: 'NOP5Q67', category: 'Estética', method: 'Cartão', type: 'in', amount: 180 },
+      { id: 8, date: '13/05 16:30', description: 'Lavagem completa', plate: 'RST6U78', category: 'Lavagem',   method: 'Débito',   type: 'in',  amount: 120 },
+    ];
+
+    const CHART = [
+      { day: 'Qua', entrada: 3200, saida: 800 },
+      { day: 'Qui', entrada: 3850, saida: 1200 },
+      { day: 'Sex', entrada: 4500, saida: 600 },
+      { day: 'Sáb', entrada: 5400, saida: 900 },
+      { day: 'Dom', entrada: 2800, saida: 200 },
+      { day: 'Seg', entrada: 4100, saida: 1400 },
+      { day: 'Ter', entrada: 4820, saida: 420 },
+    ];
+
+    function FinanceiroApp() {
+      const [period] = useState('Hoje');
+      const [filter] = useState('Todas');
+      const [transactions] = useState(INITIAL_TX);
+
+      useEffect(() => { lucide.createIcons(); }, []);
+
+      // Auto-print once everything is ready — but only if standalone (not embedded in umbrella)
+      useEffect(() => {
+        if (window !== window.top) return;
+        Promise.all([
+          document.fonts.ready,
+          new Promise(r => setTimeout(r, 500)),
+        ]).then(() => window.print());
+      }, []);
+
+      const filteredTx = useMemo(() => {
+        return transactions.filter(t => {
+          if (filter === 'Entradas') return t.type === 'in';
+          if (filter === 'Saídas')   return t.type === 'out';
+          return true;
+        });
+      }, [transactions, filter]);
+
+      const totals = useMemo(() => {
+        const inSum  = transactions.filter(t => t.type === 'in').reduce((s, t) => s + t.amount, 0);
+        const outSum = transactions.filter(t => t.type === 'out').reduce((s, t) => s + t.amount, 0);
+        const count  = transactions.filter(t => t.type === 'in').length;
+        const ticket = count ? inSum / count : 0;
+        return { inSum, outSum, balance: inSum - outSum, ticket, count };
+      }, [transactions]);
+
+      const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
+      const kpis = [
+        { label: 'Entradas',    value: fmt(totals.inSum),  delta: '+12,4%' },
+        { label: 'Saídas',      value: fmt(totals.outSum), delta: '-3,8%' },
+        { label: 'Saldo',       value: fmt(totals.balance), delta: '+18,2%' },
+        { label: 'Ticket médio', value: fmt(totals.ticket), delta: '-2,1%' },
+      ];
+
+      return (
+        <AppShell active="financeiro">
+          <PageTitle title="Controle financeiro" subtitle="Movimentações e fluxo de caixa do lava-jato">
+            <div className="lv-segmented">
+              {['Hoje', '7 dias', '30 dias', 'Mês'].map(p => (
+                <button key={p} className={p === period ? 'is-active' : ''} disabled>{p}</button>
+              ))}
+            </div>
+          </PageTitle>
+
+          <KpiRow items={kpis} />
+          <CashflowChart data={CHART} />
+          <TransactionsTable rows={filteredTx} filter={filter} onFilter={() => {}} />
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<FinanceiroApp />);
+  </script>
+</body>
+</html>

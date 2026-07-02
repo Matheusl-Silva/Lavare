@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 44" fill="none">
+  <path d="M22 6 C22 6, 11 18, 11 27 C11 33.0751, 15.9249 38, 22 38 C28.0751 38, 33 33.0751, 33 27 C33 18, 22 6, 22 6 Z" fill="#FFFFFF"></path>
+  <path d="M16.5 27 C16.5 30.0376 18.9624 32.5 22 32.5" stroke="#0EA5E9" stroke-width="2" stroke-linecap="round" fill="none"></path>
+  <text x="46" y="30" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600" fill="#FFFFFF" letter-spacing="-0.02em">Lavare</text>
+</svg>

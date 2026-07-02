@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Motion · durações & easing" subtitle="120/200/320ms · ease-out-expo" viewport="700x180" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Motion</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  h5 { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 12px; }
+  .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+  .row:last-child { border: 0; }
+  .k { font: 500 13px/1 var(--font-sans); color: var(--fg-default); }
+  .v { font: 500 12px/1 var(--font-mono); color: var(--fg-muted); }
+  .ease-demo { position: relative; height: 6px; background: var(--slate-100); border-radius: 999px; overflow: hidden; margin-top: 14px; }
+  .ease-demo::after {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 30%;
+    background: var(--brand-500); border-radius: 999px;
+    animation: slide 2.4s var(--ease-out) infinite alternate;
+  }
+  @keyframes slide { to { left: 70%; } }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div>
+      <h5>Durações</h5>
+      <div class="row"><span class="k">dur-fast</span><span class="v">120 ms · hover</span></div>
+      <div class="row"><span class="k">dur-base</span><span class="v">200 ms · state</span></div>
+      <div class="row"><span class="k">dur-slow</span><span class="v">320 ms · modal</span></div>
+    </div>
+    <div>
+      <h5>Easing</h5>
+      <div class="row"><span class="k">ease-out</span><span class="v">0.16, 1, 0.3, 1</span></div>
+      <div class="row"><span class="k">ease-in-out</span><span class="v">0.65, 0, 0.35, 1</span></div>
+      <div class="ease-demo"></div>
+    </div>
+  </div>
+</body>
+</html>

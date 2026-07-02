@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Estoque de itens — Print</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    @page { size: landscape; margin: 1cm; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      .lv-sidebar, .lv-header { display: none !important; }
+      .lv-app { display: block !important; }
+      .lv-main { display: block !important; }
+      .lv-content { padding: 0 !important; max-width: 100% !important; }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .lv-kpi-row,
+      .lv-table-card,
+      .lv-filter-pills { break-inside: avoid; }
+
+      .lv-segmented, .lv-btn { cursor: default !important; }
+      .lv-table tbody tr:hover { background: transparent !important; }
+
+      .lv-toast, .lv-overlay, .lv-drawer { display: none !important; }
+
+      .lv-kpi { background: #fff !important; box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+      .lv-table-card { box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+
+      .lv-page-title { break-after: avoid; }
+    }
+
+    body::before {
+      content: 'Versão para impressão — Cmd+P / Ctrl+P para salvar como PDF';
+      display: block;
+      text-align: center;
+      padding: 8px;
+      font: 500 12px/1 var(--font-sans);
+      color: var(--fg-muted);
+      background: var(--slate-100);
+      border-bottom: 1px solid var(--border-default);
+    }
+    @media print {
+      body::before { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="StockKpis.jsx"></script>
+  <script type="text/babel" src="FilterPills.jsx"></script>
+  <script type="text/babel" src="ItemsTable.jsx"></script>
+  <script type="text/babel" src="ItemDrawer.jsx"></script>
+  <script type="text/babel" src="DeleteConfirm.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const INITIAL = [
+      { id: 1, name: 'Shampoo automotivo 5L',  category: 'Higienização', sku: 'SHA-005', qty: 18, min: 5, max: 30, price: 42.90 },
+      { id: 2, name: 'Cera de carnaúba 500g',  category: 'Cera',         sku: 'CER-050', qty: 4,  min: 5, max: 20, price: 38.00 },
+      { id: 3, name: 'Microfibra grande',      category: 'Descartáveis', sku: 'MIC-LG',  qty: 24, min: 10, max: 60, price: 12.50 },
+      { id: 4, name: 'Pretinho de pneu 1L',    category: 'Cera',         sku: 'PRT-001', qty: 7,  min: 4, max: 15, price: 18.90 },
+      { id: 5, name: 'Limpa vidros 5L',        category: 'Higienização', sku: 'LIV-005', qty: 1,  min: 3, max: 12, price: 28.00 },
+      { id: 6, name: 'Polidor 3M 1L',          category: 'Polimento',    sku: 'POL-001', qty: 9,  min: 3, max: 12, price: 96.00 },
+      { id: 7, name: 'Luva nitrílica (cx 100)', category: 'Descartáveis', sku: 'LUV-100', qty: 11, min: 4, max: 20, price: 54.00 },
+      { id: 8, name: 'Aspirador industrial',   category: 'Equipamentos', sku: 'EQP-A01', qty: 2,  min: 1, max: 3,  price: 1280.00 },
+    ];
+
+    function EstoqueApp() {
+      const [items] = useState(INITIAL);
+      const [active] = useState('todas');
+
+      useEffect(() => { lucide.createIcons(); }, []);
+
+      useEffect(() => {
+        if (window !== window.top) return;
+        Promise.all([
+          document.fonts.ready,
+          new Promise(r => setTimeout(r, 500)),
+        ]).then(() => window.print());
+      }, []);
+
+      const cats = useMemo(() => {
+        const map = new Map();
+        items.forEach(i => map.set(i.category, (map.get(i.category) || 0) + 1));
+        return [
+          { id: 'todas', label: 'Todas', count: items.length },
+          ...[...map].map(([label, count]) => ({ id: label, label, count })),
+          { id: 'baixo', label: 'Estoque baixo', count: items.filter(i => i.qty <= i.min).length },
+        ];
+      }, [items]);
+
+      const filtered = items;
+      const totalValue = items.reduce((s, i) => s + i.qty * i.price, 0);
+      const lowCount = items.filter(i => i.qty <= i.min).length;
+
+      const kpis = [
+        { label: 'Itens cadastrados', value: items.length.toString() },
+        { label: 'Valor em estoque',  value: 'R$ ' + totalValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) },
+        { label: 'Abaixo do mínimo',  value: lowCount.toString(), color: lowCount ? 'var(--warning-700)' : 'var(--fg-default)' },
+        { label: 'Movimentações 7d',  value: '42', sub: '24 entradas · 18 saídas' },
+      ];
+
+      return (
+        <AppShell active="estoque-itens">
+          <PageTitle title="Estoque de itens" subtitle="Produtos e insumos do lava-jato">
+            <button className="lv-btn lv-btn--secondary" disabled><Icon name="upload" size={16} /> Importar planilha</button>
+            <button className="lv-btn lv-btn--primary" disabled><Icon name="plus" size={16} stroke={2} /> Novo item</button>
+          </PageTitle>
+
+          <StockKpis items={kpis} />
+          <FilterPills categories={cats} active={active} onSelect={() => {}} />
+          <ItemsTable rows={filtered} onMove={() => {}} onDelete={() => {}} />
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<EstoqueApp />);
+  </script>
+</body>
+</html>

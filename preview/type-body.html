@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Type · body & captions" subtitle="Body, Small, Caption, Overline" viewport="700x230" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Body type</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px; background: var(--bg-surface); }
+  .row { display: grid; grid-template-columns: 80px 1fr 120px; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); }
+  .row:last-child { border: 0; }
+  .label { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); }
+  .meta { font: 500 11px/1 var(--font-mono); color: var(--fg-muted); text-align: right; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="label">Body</span>
+    <span style="font: 400 14px/1.5 var(--font-sans); color: var(--fg-default);">Pagamento recebido em dinheiro do cliente Marcos Silva.</span>
+    <span class="meta">14 · 400</span>
+  </div>
+  <div class="row">
+    <span class="label">Small</span>
+    <span style="font: 400 13px/1.5 var(--font-sans); color: var(--fg-muted);">Última atualização há 2 minutos</span>
+    <span class="meta">13 · 400</span>
+  </div>
+  <div class="row">
+    <span class="label">Caption</span>
+    <span style="font: 500 12px/1.35 var(--font-sans); color: var(--fg-muted);">Inclui taxa da maquininha</span>
+    <span class="meta">12 · 500</span>
+  </div>
+  <div class="row">
+    <span class="label">Overline</span>
+    <span style="font: 600 12px/1.2 var(--font-sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg-subtle);">Resumo financeiro</span>
+    <span class="meta">12 · 600 · UC</span>
+  </div>
+</body>
+</html>

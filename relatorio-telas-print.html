@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Relatório de telas (financeiro, estoque de itens, fila de carros, relatórios)</title>
+  <link rel="icon" href="assets/favicon.svg">
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --ink: #0F172A;
+      --muted: #475569;
+      --border: #E2E8F0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Inter", Segoe UI, sans-serif; }
+
+    /* On-screen header (hidden in print) */
+    .toolbar {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px;
+      padding: 12px 20px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+    }
+    .toolbar h1 { margin: 0; font: 600 15px/1.3 inherit; }
+    .toolbar p { margin: 2px 0 0; font: 400 12px/1.4 inherit; color: var(--muted); }
+    .toolbar__status { font: 500 12px/1 inherit; color: var(--muted); }
+    .toolbar__status.is-ready { color: #047857; }
+
+    .stack { padding: 24px; display: flex; flex-direction: column; gap: 24px; align-items: center; }
+
+    .kit {
+      width: 1280px;
+      max-width: 100%;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+    }
+    .kit__label {
+      display: flex; align-items: baseline; gap: 8px;
+      padding: 10px 16px;
+      font: 600 12px/1.2 inherit;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #F1F5F9;
+      border-bottom: 1px solid var(--border);
+    }
+    .kit__label span:last-child { color: var(--ink); text-transform: none; letter-spacing: 0; font-weight: 500; }
+    .kit iframe {
+      display: block;
+      width: 1280px;
+      border: 0;
+      background: var(--bg);
+    }
+
+    @media print {
+      @page { size: 1280px auto; margin: 0; }
+      html, body { background: #fff !important; }
+      .toolbar { display: none !important; }
+      .stack { padding: 0 !important; gap: 0 !important; }
+      .kit {
+        width: 1280px !important;
+        max-width: none !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        break-after: page;
+        page-break-after: always;
+      }
+      .kit:last-child { break-after: auto; page-break-after: auto; }
+      .kit__label {
+        background: #fff !important;
+        color: var(--ink) !important;
+        border-bottom: 1px solid var(--border) !important;
+      }
+      .kit iframe { width: 1280px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div>
+      <h1>Lavare — relatório de telas</h1>
+      <p>Financeiro · Estoque de itens · Fila de carros · Relatórios</p>
+    </div>
+    <div class="toolbar__status" id="status">Carregando telas…</div>
+  </div>
+
+  <div class="stack">
+    <section class="kit">
+      <div class="kit__label"><span>01</span><span>Controle financeiro</span></div>
+      <iframe data-src="ui_kits/financeiro/index-print.html" title="Controle financeiro"></iframe>
+    </section>
+    <section class="kit">
+      <div class="kit__label"><span>02</span><span>Estoque de itens</span></div>
+      <iframe data-src="ui_kits/estoque-itens/index-print.html" title="Estoque de itens"></iframe>
+    </section>
+    <section class="kit">
+      <div class="kit__label"><span>03</span><span>Fila de carros</span></div>
+      <iframe data-src="ui_kits/estoque-carros/index-print.html" title="Fila de carros"></iframe>
+    </section>
+    <section class="kit">
+      <div class="kit__label"><span>04</span><span>Relatórios</span></div>
+      <iframe data-src="ui_kits/relatorios/index-print.html" title="Relatórios"></iframe>
+    </section>
+  </div>
+
+  <script>
+    (function() {
+      const iframes = [...document.querySelectorAll('iframe[data-src]')];
+      const status = document.getElementById('status');
+
+      function resizeIframe(iframe) {
+        try {
+          const doc = iframe.contentDocument;
+          if (!doc) return;
+          // Hide the on-screen "Versão para impressão" banner inside the iframe so it doesn't double up
+          const style = doc.createElement('style');
+          style.textContent = 'body::before { display: none !important; }';
+          doc.head.appendChild(style);
+          // Measure
+          const h = Math.max(
+            doc.body.scrollHeight,
+            doc.documentElement.scrollHeight,
+            doc.body.offsetHeight,
+            doc.documentElement.offsetHeight
+          );
+          iframe.style.height = (h + 16) + 'px';
+        } catch (e) {
+          console.warn('iframe measure failed', e);
+        }
+      }
+
+      let loaded = 0;
+      function onIframeReady(iframe) {
+        loaded++;
+        resizeIframe(iframe);
+        // Re-measure after React + fonts settle
+        setTimeout(() => resizeIframe(iframe), 800);
+        setTimeout(() => resizeIframe(iframe), 1800);
+
+        status.textContent = `Carregando telas… ${loaded}/${iframes.length}`;
+        if (loaded === iframes.length) {
+          // Wait for layout to settle, then print
+          Promise.all([
+            document.fonts.ready,
+            new Promise(r => setTimeout(r, 2400)),
+          ]).then(() => {
+            // One last resize pass
+            iframes.forEach(resizeIframe);
+            status.textContent = 'Pronto — abrindo diálogo de impressão';
+            status.classList.add('is-ready');
+            setTimeout(() => window.print(), 400);
+          });
+        }
+      }
+
+      // Kick off loading in sequence to avoid network/CPU contention from 4 Babel loads at once
+      function loadNext(idx) {
+        if (idx >= iframes.length) return;
+        const f = iframes[idx];
+        f.addEventListener('load', () => {
+          onIframeReady(f);
+          loadNext(idx + 1);
+        }, { once: true });
+        f.src = f.dataset.src;
+      }
+      loadNext(0);
+    })();
+  </script>
+</body>
+</html>

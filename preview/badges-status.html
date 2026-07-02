@@ -1,0 +1,49 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Badges & status pills" subtitle="Status de carro, métodos de pagamento" viewport="700x180" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Badges & status</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  h5 { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 4px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font: 500 12px/1 var(--font-sans);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+  }
+  .dot { width: 6px; height: 6px; border-radius: 999px; }
+  .b-neutral  { background: var(--slate-100); color: var(--slate-700); }
+  .b-info     { background: var(--brand-50); color: var(--brand-700); }
+  .b-success  { background: var(--success-50); color: var(--success-700); }
+  .b-warning  { background: var(--warning-50); color: var(--warning-700); }
+  .b-danger   { background: var(--danger-50); color: var(--danger-700); }
+  .b-outline  { background: #fff; color: var(--fg-default); border-color: var(--border-default); }
+</style>
+</head>
+<body>
+  <div>
+    <h5>Status</h5>
+    <div class="row">
+      <span class="badge b-info"><span class="dot" style="background:var(--brand-500)"></span>Em lavagem</span>
+      <span class="badge b-warning"><span class="dot" style="background:var(--warning-500)"></span>Aguardando</span>
+      <span class="badge b-success"><span class="dot" style="background:var(--success-500)"></span>Pronto para retirada</span>
+      <span class="badge b-neutral"><span class="dot" style="background:var(--slate-400)"></span>Entregue</span>
+      <span class="badge b-danger"><span class="dot" style="background:var(--danger-500)"></span>Estoque crítico</span>
+    </div>
+  </div>
+  <div>
+    <h5>Categorias</h5>
+    <div class="row">
+      <span class="badge b-outline">Pix</span>
+      <span class="badge b-outline">Dinheiro</span>
+      <span class="badge b-outline">Cartão de crédito</span>
+      <span class="badge b-outline">Cartão de débito</span>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Radius scale" subtitle="xs, sm, md, lg, xl, pill" viewport="700x160" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Radius scale</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); display: flex; gap: 16px; align-items: flex-end; }
+  .item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .box { width: 72px; height: 72px; background: var(--brand-50); border: 1px solid var(--brand-200); }
+  .pill { width: 110px; height: 36px; background: var(--brand-50); border: 1px solid var(--brand-200); border-radius: 999px; }
+  .name { font: 500 12px/1 var(--font-mono); color: var(--fg-default); }
+  .px { font: 400 11px/1 var(--font-mono); color: var(--fg-muted); }
+</style>
+</head>
+<body>
+  <div class="item"><div class="box" style="border-radius:4px"></div><span class="name">xs</span><span class="px">4 px</span></div>
+  <div class="item"><div class="box" style="border-radius:6px"></div><span class="name">sm</span><span class="px">6 px</span></div>
+  <div class="item"><div class="box" style="border-radius:8px"></div><span class="name">md</span><span class="px">8 px</span></div>
+  <div class="item"><div class="box" style="border-radius:12px"></div><span class="name">lg</span><span class="px">12 px</span></div>
+  <div class="item"><div class="box" style="border-radius:16px"></div><span class="name">xl</span><span class="px">16 px</span></div>
+  <div class="item"><div class="pill"></div><span class="name">pill</span><span class="px">999 px</span></div>
+</body>
+</html>

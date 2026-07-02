@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Buttons" subtitle="Primary, secondary, ghost, danger" viewport="700x220" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 12px; align-items: start; }
+  .col h5 { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 10px; }
+  .col { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+  .btn {
+    font: 500 14px/1 var(--font-sans);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary { background: var(--brand-500); color: #fff; }
+  .btn-primary:hover { background: var(--brand-600); }
+  .btn-secondary { background: #fff; color: var(--fg-default); border-color: var(--border-default); box-shadow: var(--shadow-xs); }
+  .btn-secondary:hover { background: var(--slate-50); }
+  .btn-ghost { background: transparent; color: var(--fg-default); }
+  .btn-ghost:hover { background: var(--slate-100); }
+  .btn-danger { background: var(--danger-500); color: #fff; }
+  .btn-danger:hover { background: var(--danger-700); }
+  .btn-sm { font-size: 13px; padding: 7px 10px; }
+  .btn-lg { font-size: 15px; padding: 12px 18px; }
+  .btn[disabled] { opacity: 0.5; cursor: not-allowed; }
+  svg { width: 16px; height: 16px; stroke-width: 1.75; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="col">
+      <h5>Primary</h5>
+      <button class="btn btn-primary">Registrar entrada</button>
+      <button class="btn btn-primary btn-sm">Salvar</button>
+      <button class="btn btn-primary" disabled>Salvar</button>
+    </div>
+    <div class="col">
+      <h5>Secondary</h5>
+      <button class="btn btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        Adicionar item
+      </button>
+      <button class="btn btn-secondary btn-sm">Exportar</button>
+      <button class="btn btn-secondary" disabled>Salvar</button>
+    </div>
+    <div class="col">
+      <h5>Ghost</h5>
+      <button class="btn btn-ghost">Cancelar</button>
+      <button class="btn btn-ghost btn-sm">Ver tudo</button>
+    </div>
+    <div class="col">
+      <h5>Danger</h5>
+      <button class="btn btn-danger">Excluir movimentação</button>
+      <button class="btn btn-danger btn-sm">Excluir</button>
+    </div>
+  </div>
+</body>
+</html>

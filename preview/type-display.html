@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Type · display & headings" subtitle="Display, H1, H2, H3" viewport="700x250" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Display & headings</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px; background: var(--bg-surface); }
+  .row { display: grid; grid-template-columns: 80px 1fr 120px; align-items: baseline; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border-subtle); }
+  .row:last-child { border: 0; }
+  .label { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); }
+  .meta { font: 500 11px/1 var(--font-mono); color: var(--fg-muted); text-align: right; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="label">Display</span>
+    <span style="font: 600 32px/1.2 var(--font-sans); letter-spacing: -0.01em; color: var(--fg-default);">Controle financeiro</span>
+    <span class="meta">32 · 600 · -1%</span>
+  </div>
+  <div class="row">
+    <span class="label">H1</span>
+    <span style="font: 600 24px/1.2 var(--font-sans); letter-spacing: -0.01em; color: var(--fg-default);">Movimentações de hoje</span>
+    <span class="meta">24 · 600 · -1%</span>
+  </div>
+  <div class="row">
+    <span class="label">H2</span>
+    <span style="font: 600 20px/1.2 var(--font-sans); letter-spacing: -0.01em; color: var(--fg-default);">Total recebido</span>
+    <span class="meta">20 · 600 · -1%</span>
+  </div>
+  <div class="row">
+    <span class="label">H3</span>
+    <span style="font: 600 18px/1.35 var(--font-sans); color: var(--fg-default);">Resumo do mês</span>
+    <span class="meta">18 · 600</span>
+  </div>
+</body>
+</html>

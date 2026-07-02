@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Slate</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; }
+  .row { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; }
+  .sw { aspect-ratio: 1.4 / 1; border-radius: 8px; padding: 8px 10px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; font-family: var(--font-sans); }
+  .sw.dark { color: rgba(255,255,255,.95); }
+  .sw.light { color: var(--slate-800); }
+  .sw .step { font-size: 11px; font-weight: 600; }
+  .sw .hex { font-size: 10px; font-family: var(--font-mono); opacity: .85; }
+  .title { font-size: 12px; font-weight: 600; color: var(--fg-primary); margin-bottom: 8px; letter-spacing: -.01em; }
+  .sub { font-size: 11px; color: var(--fg-tertiary); margin-bottom: 14px; }
+</style></head><body>
+  <div class="title">Slate — Neutros</div>
+  <div class="sub">Cinzas frios. Texto, fundos, bordas. slate-900 = body principal; slate-500 = meta; slate-200 = bordas.</div>
+  <div class="row">
+    <div class="sw light" style="background:#F8FAFC;border:1px solid #E2E8F0"><span class="step">50</span><span class="hex">#F8FAFC</span></div>
+    <div class="sw light" style="background:#F1F5F9"><span class="step">100</span><span class="hex">#F1F5F9</span></div>
+    <div class="sw light" style="background:#E2E8F0"><span class="step">200</span><span class="hex">#E2E8F0</span></div>
+    <div class="sw light" style="background:#CBD5E1"><span class="step">300</span><span class="hex">#CBD5E1</span></div>
+    <div class="sw light" style="background:#94A3B8"><span class="step">400</span><span class="hex">#94A3B8</span></div>
+    <div class="sw dark" style="background:#64748B"><span class="step">500</span><span class="hex">#64748B</span></div>
+    <div class="sw dark" style="background:#475569"><span class="step">600</span><span class="hex">#475569</span></div>
+    <div class="sw dark" style="background:#334155"><span class="step">700</span><span class="hex">#334155</span></div>
+    <div class="sw dark" style="background:#1E293B"><span class="step">800</span><span class="hex">#1E293B</span></div>
+    <div class="sw dark" style="background:#0F172A"><span class="step">900</span><span class="hex">#0F172A</span></div>
+  </div>
+</body></html>

@@ -1,0 +1,154 @@
+<!doctype html>
+<!-- @dsCard group="UI Kit — Clientes" name="UI kit · Clientes" subtitle="Lista de clientes · histórico em drawer · veículos" viewport="1280x720" -->
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Clientes</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="ClientsTable.jsx"></script>
+  <script type="text/babel" src="ClientDrawer.jsx"></script>
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const CLIENTS = [
+      {
+        id: 'cl1', name: 'Marcos Silva', email: 'marcos.silva@email.com', phone: '(11) 98765-4321',
+        plates: ['ABC1D23', 'XYZ9W87'], tier: 'VIP', totalSpent: 2840, lastVisit: '14/05/2026', lastService: 'Lavagem completa',
+        vehicles: [
+          { plate: 'ABC1D23', model: 'Honda Civic', color: 'Prata', since: '03/2024' },
+          { plate: 'XYZ9W87', model: 'Toyota Hilux', color: 'Branco', since: '11/2025' },
+        ],
+        history: [
+          { date: '14/05/2026', service: 'Lavagem completa',  plate: 'ABC1D23', price: 120, method: 'Pix' },
+          { date: '02/05/2026', service: 'Polimento técnico', plate: 'ABC1D23', price: 280, method: 'Cartão' },
+          { date: '18/04/2026', service: 'Lavagem + cera',    plate: 'XYZ9W87', price: 180, method: 'Pix' },
+          { date: '04/04/2026', service: 'Higienização interna', plate: 'ABC1D23', price: 180, method: 'Cartão' },
+          { date: '20/03/2026', service: 'Lavagem completa',  plate: 'XYZ9W87', price: 120, method: 'Pix' },
+        ],
+        notes: 'Cliente fidelidade desde 2024. Prefere atendimento na hora marcada às 9h.',
+      },
+      {
+        id: 'cl2', name: 'Ana Ferreira', email: 'ana.ferreira@email.com', phone: '(11) 91234-5678',
+        plates: ['DEF2G34'], tier: 'normal', totalSpent: 540, lastVisit: '14/05/2026', lastService: 'Lavagem simples',
+        vehicles: [{ plate: 'DEF2G34', model: 'VW Gol', color: 'Vermelho', since: '06/2025' }],
+        history: [
+          { date: '14/05/2026', service: 'Lavagem simples', plate: 'DEF2G34', price: 60, method: 'Dinheiro' },
+          { date: '28/04/2026', service: 'Lavagem completa', plate: 'DEF2G34', price: 120, method: 'Pix' },
+          { date: '12/04/2026', service: 'Lavagem + cera', plate: 'DEF2G34', price: 180, method: 'Pix' },
+        ],
+      },
+      {
+        id: 'cl3', name: 'João Pereira', phone: '(21) 97777-8888',
+        plates: ['GHI3J45', 'LMN0O12', 'PQR1S23'], tier: 'VIP', totalSpent: 5680, lastVisit: '14/05/2026', lastService: 'Polimento técnico',
+        vehicles: [
+          { plate: 'GHI3J45', model: 'Toyota Corolla', color: 'Preto', since: '01/2023' },
+          { plate: 'LMN0O12', model: 'BMW 320i', color: 'Cinza grafite', since: '08/2023' },
+          { plate: 'PQR1S23', model: 'Honda HR-V', color: 'Branco perolado', since: '02/2025' },
+        ],
+        history: [
+          { date: '14/05/2026', service: 'Polimento técnico', plate: 'GHI3J45', price: 280, method: 'Cartão' },
+          { date: '06/05/2026', service: 'Lavagem completa', plate: 'LMN0O12', price: 120, method: 'Pix' },
+          { date: '24/04/2026', service: 'Lavagem + cera', plate: 'PQR1S23', price: 180, method: 'Cartão' },
+        ],
+        notes: 'Frota corporativa. Faturamento mensal.',
+      },
+      {
+        id: 'cl4', name: 'Carla Mendes', phone: '(31) 98888-9999',
+        plates: ['JKL4M56'], tier: 'normal', totalSpent: 360, lastVisit: '14/05/2026', lastService: 'Lavagem + cera',
+        vehicles: [{ plate: 'JKL4M56', model: 'Fiat Argo', color: 'Branco', since: '11/2024' }],
+        history: [
+          { date: '14/05/2026', service: 'Lavagem + cera', plate: 'JKL4M56', price: 180, method: 'Pix' },
+          { date: '20/04/2026', service: 'Lavagem completa', plate: 'JKL4M56', price: 120, method: 'Cartão' },
+        ],
+      },
+      {
+        id: 'cl5', name: 'Felipe Costa', phone: '(11) 92222-3333',
+        plates: ['NOP5Q67'], tier: 'normal', totalSpent: 180, lastVisit: '08/02/2026', lastService: 'Lavagem simples',
+        vehicles: [{ plate: 'NOP5Q67', model: 'Hyundai HB20', color: 'Azul', since: '02/2026' }],
+        history: [
+          { date: '08/02/2026', service: 'Lavagem simples', plate: 'NOP5Q67', price: 60, method: 'Pix' },
+        ],
+      },
+      {
+        id: 'cl6', name: 'Patrícia Lima', email: 'patricia.lima@email.com', phone: '(11) 94444-5555',
+        plates: ['RST6U78'], tier: 'normal', totalSpent: 1240, lastVisit: '13/05/2026', lastService: 'Higienização interna',
+        vehicles: [{ plate: 'RST6U78', model: 'Jeep Renegade', color: 'Cinza', since: '04/2024' }],
+        history: [
+          { date: '13/05/2026', service: 'Higienização interna', plate: 'RST6U78', price: 180, method: 'Cartão' },
+          { date: '30/04/2026', service: 'Lavagem completa', plate: 'RST6U78', price: 120, method: 'Pix' },
+          { date: '14/04/2026', service: 'Lavagem completa', plate: 'RST6U78', price: 120, method: 'Pix' },
+        ],
+      },
+    ];
+
+    function ClientesApp() {
+      const [filter, setFilter] = useState('Todos');
+      const [query, setQuery] = useState('');
+      const [open, setOpen] = useState(null);
+
+      useEffect(() => { lucide.createIcons(); });
+
+      const filtered = useMemo(() => {
+        let r = CLIENTS;
+        if (filter === 'VIP')     r = r.filter(c => c.tier === 'VIP');
+        if (filter === 'Inativos') r = r.filter(c => {
+          // last visit older than 60 days from "today" (2026-05-15)
+          const [d, m, y] = c.lastVisit.split('/').map(Number);
+          const dt = new Date(y, m - 1, d);
+          return (new Date(2026, 4, 15) - dt) / (1000 * 60 * 60 * 24) > 60;
+        });
+        if (query.trim()) {
+          const q = query.toLowerCase();
+          r = r.filter(c =>
+            c.name.toLowerCase().includes(q) ||
+            c.phone.includes(q) ||
+            c.plates.some(p => p.toLowerCase().includes(q))
+          );
+        }
+        return r;
+      }, [filter, query]);
+
+      const kpis = [
+        { label: 'Clientes cadastrados', value: CLIENTS.length.toString() },
+        { label: 'Clientes VIP', value: CLIENTS.filter(c => c.tier === 'VIP').length.toString() },
+        { label: 'Receita acumulada', value: 'R$ ' + CLIENTS.reduce((s, c) => s + c.totalSpent, 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 }) },
+        { label: 'Ticket médio', value: 'R$ 142,80' },
+      ];
+
+      return (
+        <AppShell active="clientes">
+          <PageTitle title="Clientes" subtitle="Base de clientes e histórico de serviços">
+            <button className="lv-btn lv-btn--secondary"><Icon name="download" size={16} /> Exportar</button>
+            <button className="lv-btn lv-btn--primary"><Icon name="plus" size={16} stroke={2} /> Novo cliente</button>
+          </PageTitle>
+
+          <div className="lv-kpi-row">
+            {kpis.map(k => (
+              <div key={k.label} className="lv-kpi">
+                <div className="lv-kpi__label">{k.label}</div>
+                <div className="lv-kpi__value">{k.value}</div>
+              </div>
+            ))}
+          </div>
+
+          <ClientsTable rows={filtered} onOpen={setOpen} filter={filter} onFilter={setFilter} query={query} onQuery={setQuery} />
+
+          <ClientDrawer open={!!open} client={open} onClose={() => setOpen(null)} />
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<ClientesApp />);
+  </script>
+</body>
+</html>

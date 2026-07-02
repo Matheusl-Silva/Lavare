@@ -1,0 +1,38 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="KPI cards" subtitle="Métricas com delta vs. período anterior" viewport="700x160" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>KPI cards</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-page); }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .kpi { background: #fff; border: 1px solid var(--border-default); border-radius: 8px; padding: 16px 18px; box-shadow: var(--shadow-sm); }
+  .label { font: 500 12px/1 var(--font-sans); color: var(--fg-muted); letter-spacing: 0.02em; }
+  .value { font: 600 28px/1.2 var(--font-sans); color: var(--fg-default); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; margin-top: 8px; }
+  .delta { display: inline-flex; align-items: center; gap: 4px; font: 500 12px/1 var(--font-sans); margin-top: 8px; }
+  .up { color: var(--success-700); }
+  .down { color: var(--danger-700); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="kpi">
+      <div class="label">Entradas hoje</div>
+      <div class="value">R$ 4.820,00</div>
+      <div class="delta up">↑ 12,4% vs. ontem</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Carros atendidos</div>
+      <div class="value">38</div>
+      <div class="delta up">↑ 4 vs. ontem</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Ticket médio</div>
+      <div class="value">R$ 126,80</div>
+      <div class="delta down">↓ 2,1% vs. ontem</div>
+    </div>
+  </div>
+</body>
+</html>

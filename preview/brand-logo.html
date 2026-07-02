@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Logo Lavare" subtitle="Wordmark + marca sobre fundos" viewport="700x170" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Marca</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; align-items: stretch; }
+  .panel { border: 1px solid var(--border-default); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 12px; justify-content: center; align-items: center; }
+  .panel.dark { background: var(--slate-900); }
+  .panel.brand { background: var(--brand-500); }
+  .label { font: 500 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); }
+  .panel.dark .label, .panel.brand .label { color: rgba(255,255,255,0.7); }
+  img { display: block; }
+  .wordmark { height: 32px; }
+  .mark { height: 48px; width: 48px; }
+</style>
+</head>
+<body>
+  <div class="panel">
+    <img class="wordmark" src="../assets/logo.svg" alt="Lavare">
+    <span class="label">Wordmark · padrão</span>
+  </div>
+  <div class="panel dark">
+    <img class="wordmark" src="../assets/logo.svg" alt="Lavare" style="filter: brightness(0) invert(1)">
+    <span class="label">Wordmark · escuro</span>
+  </div>
+  <div class="panel brand">
+    <img class="mark" src="../assets/logo-mark.svg" alt="Lavare" style="filter: brightness(0) invert(1)">
+    <span class="label">Marca · sobre brand</span>
+  </div>
+</body>
+</html>

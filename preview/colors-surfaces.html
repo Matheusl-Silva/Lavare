@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Surfaces & text" subtitle="Tokens de fundo, borda e texto" viewport="700x280" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Surface & text tokens</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-page); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .panel { background: var(--bg-surface); border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 16px; }
+  .panel h5 { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 12px; }
+  .row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+  .row:last-child { border-bottom: 0; }
+  .chip { width: 32px; height: 32px; border-radius: 6px; border: 1px solid var(--border-default); flex-shrink: 0; }
+  .info { display: flex; justify-content: space-between; flex: 1; align-items: baseline; gap: 12px; }
+  .token { font: 500 13px/1 var(--font-sans); color: var(--fg-default); }
+  .hex { font: 500 11px/1 var(--font-mono); color: var(--fg-muted); }
+  .demo-text-default { color: #0F172A; }
+  .demo-text-muted   { color: #475569; }
+  .demo-text-subtle  { color: #94A3B8; }
+  .text-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+  .text-row:last-child { border-bottom: 0; }
+  .text-sample { font: 500 14px/1 var(--font-sans); flex: 1; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="panel">
+      <h5>Surfaces</h5>
+      <div class="row"><div class="chip" style="background:#F8FAFC"></div><div class="info"><span class="token">bg-page</span><span class="hex">#F8FAFC</span></div></div>
+      <div class="row"><div class="chip" style="background:#FFFFFF"></div><div class="info"><span class="token">bg-surface</span><span class="hex">#FFFFFF</span></div></div>
+      <div class="row"><div class="chip" style="background:#F1F5F9"></div><div class="info"><span class="token">bg-muted</span><span class="hex">#F1F5F9</span></div></div>
+      <div class="row"><div class="chip" style="background:#EFF6FF"></div><div class="info"><span class="token">bg-selected</span><span class="hex">#EFF6FF</span></div></div>
+      <div class="row"><div class="chip" style="background:#E2E8F0"></div><div class="info"><span class="token">border-default</span><span class="hex">#E2E8F0</span></div></div>
+    </div>
+    <div class="panel">
+      <h5>Foreground</h5>
+      <div class="text-row"><div class="text-sample demo-text-default">Texto principal</div><span class="hex">#0F172A</span></div>
+      <div class="text-row"><div class="text-sample demo-text-muted">Texto secundário</div><span class="hex">#475569</span></div>
+      <div class="text-row"><div class="text-sample demo-text-subtle">Placeholder / sutil</div><span class="hex">#94A3B8</span></div>
+      <div class="text-row"><div class="text-sample" style="color:#0284C7">Link · fg-link</div><span class="hex">#0284C7</span></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Fila de carros — Print</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    @page { size: landscape; margin: 1cm; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      .lv-sidebar, .lv-header { display: none !important; }
+      .lv-app { display: block !important; }
+      .lv-main { display: block !important; }
+      .lv-content { padding: 0 !important; max-width: 100% !important; }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .lv-kpi-row { break-inside: avoid; }
+      .lv-kanban-col { break-inside: avoid; }
+      .lv-car-card { break-inside: avoid; }
+
+      .lv-segmented, .lv-btn { cursor: default !important; }
+      .lv-toast, .lv-overlay, .lv-modal { display: none !important; }
+
+      .lv-kpi { background: #fff !important; box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+      .lv-kanban-col, .lv-car-card { box-shadow: none !important; }
+
+      .lv-page-title { break-after: avoid; }
+    }
+
+    body::before {
+      content: 'Versão para impressão — Cmd+P / Ctrl+P para salvar como PDF';
+      display: block;
+      text-align: center;
+      padding: 8px;
+      font: 500 12px/1 var(--font-sans);
+      color: var(--fg-muted);
+      background: var(--slate-100);
+      border-bottom: 1px solid var(--border-default);
+    }
+    @media print {
+      body::before { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="QueueStats.jsx"></script>
+  <script type="text/babel" src="CarKanban.jsx"></script>
+  <script type="text/babel" src="NewCarModal.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const INITIAL = [
+      { id: 'c1', plate: 'ABC1D23', model: 'Honda Civic prata',    service: 'Lavagem completa',  customer: 'Marcos Silva',    duration: '24 min', price: 120, status: 'wash' },
+      { id: 'c2', plate: 'DEF2G34', model: 'VW Gol vermelho',      service: 'Lavagem simples',   customer: 'Ana Ferreira',    duration: '8 min',  price: 60,  status: 'wash' },
+      { id: 'c3', plate: 'GHI3J45', model: 'Toyota Corolla preto', service: 'Polimento técnico', customer: 'João Pereira',    duration: '1 h 12 min', price: 280, status: 'wash' },
+      { id: 'c4', plate: 'JKL4M56', model: 'Fiat Argo branco',     service: 'Lavagem + cera',    customer: 'Carla Mendes',    duration: '4 min',  price: 180, status: 'wait' },
+      { id: 'c5', plate: 'NOP5Q67', model: 'Hyundai HB20 azul',    service: 'Lavagem simples',   customer: 'Felipe Costa',    duration: '12 min', price: 60,  status: 'wait' },
+      { id: 'c6', plate: 'RST6U78', model: 'Jeep Renegade cinza',  service: 'Higienização interna', customer: 'Patrícia Lima', duration: '38 min', price: 180, status: 'ready' },
+      { id: 'c7', plate: 'UVW7X89', model: 'Chevrolet Onix preto', service: 'Lavagem completa',  customer: 'Roberto Alves',   duration: '55 min', price: 120, status: 'ready' },
+    ];
+
+    function CarrosApp() {
+      const [cars] = useState(INITIAL);
+
+      useEffect(() => { lucide.createIcons(); }, []);
+      useEffect(() => {
+        if (window !== window.top) return;
+        Promise.all([
+          document.fonts.ready,
+          new Promise(r => setTimeout(r, 500)),
+        ]).then(() => window.print());
+      }, []);
+
+      const stats = useMemo(() => {
+        const wait = cars.filter(c => c.status === 'wait').length;
+        const wash = cars.filter(c => c.status === 'wash').length;
+        const ready = cars.filter(c => c.status === 'ready').length;
+        const inHouse = wait + wash + ready;
+        const revenue = cars.reduce((s, c) => s + c.price, 0);
+        return { wait, wash, ready, inHouse, revenue };
+      }, [cars]);
+
+      const kpis = [
+        { label: 'Carros na unidade', value: stats.inHouse.toString(), sub: `${stats.wait} aguardando · ${stats.wash} em lavagem` },
+        { label: 'Prontos para retirar', value: stats.ready.toString(), color: stats.ready ? 'var(--success-700)' : 'var(--fg-default)' },
+        { label: 'Receita prevista', value: 'R$ ' + stats.revenue.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) },
+        { label: 'Tempo médio', value: '32 min', sub: 'últimas 24 h' },
+      ];
+
+      return (
+        <AppShell active="estoque-carros">
+          <PageTitle title="Fila de carros" subtitle="Acompanhe os veículos em atendimento">
+            <button className="lv-btn lv-btn--secondary" disabled><Icon name="list" size={16} /> Ver histórico</button>
+            <button className="lv-btn lv-btn--primary" disabled><Icon name="plus" size={16} stroke={2} /> Novo carro</button>
+          </PageTitle>
+
+          <QueueStats items={kpis} />
+          <CarKanban cars={cars} onAdvance={() => {}} />
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<CarrosApp />);
+  </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Relatórios — Print</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <style>
+    @page { size: landscape; margin: 1cm; }
+
+    @media print {
+      * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+      .lv-sidebar, .lv-header { display: none !important; }
+      .lv-app { display: block !important; }
+      .lv-main { display: block !important; }
+      .lv-content { padding: 0 !important; max-width: 100% !important; }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .lv-kpi-row, .lv-chart-card, .lv-two-col, .lv-toplist-card { break-inside: avoid; }
+
+      .lv-segmented, .lv-btn { cursor: default !important; }
+
+      .lv-kpi { background: #fff !important; box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+      .lv-chart-card, .lv-toplist-card { box-shadow: none !important; border: 1px solid #E2E8F0 !important; }
+
+      .lv-page-title { break-after: avoid; }
+    }
+
+    body::before {
+      content: 'Versão para impressão — Cmd+P / Ctrl+P para salvar como PDF';
+      display: block;
+      text-align: center;
+      padding: 8px;
+      font: 500 12px/1 var(--font-sans);
+      color: var(--fg-muted);
+      background: var(--slate-100);
+      border-bottom: 1px solid var(--border-default);
+    }
+    @media print {
+      body::before { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="RevenueChart.jsx"></script>
+  <script type="text/babel" src="ServicesDonut.jsx"></script>
+  <script type="text/babel" src="TopList.jsx"></script>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const REVENUE = [
+      { label: 'Jun', value: 24800 }, { label: 'Jul', value: 26200 }, { label: 'Ago', value: 28100 },
+      { label: 'Set', value: 27400 }, { label: 'Out', value: 30200 }, { label: 'Nov', value: 32600 },
+      { label: 'Dez', value: 38400 }, { label: 'Jan', value: 29100 }, { label: 'Fev', value: 31800 },
+      { label: 'Mar', value: 34200 }, { label: 'Abr', value: 36800 }, { label: 'Mai', value: 39400 },
+    ];
+
+    const SERVICES = [
+      { label: 'Lavagem completa',     value: 142, color: '#0EA5E9' },
+      { label: 'Lavagem simples',      value: 98,  color: '#38BDF8' },
+      { label: 'Polimento',            value: 38,  color: '#0284C7' },
+      { label: 'Higienização interna', value: 24,  color: '#7DD3FC' },
+      { label: 'Lavagem + cera',       value: 56,  color: '#0369A1' },
+    ];
+
+    const TOP_CLIENTS = [
+      { label: 'João Pereira',    value: 5680 },
+      { label: 'Marcos Silva',    value: 2840 },
+      { label: 'Patrícia Lima',   value: 1240 },
+      { label: 'Carla Mendes',    value: 980 },
+      { label: 'Ana Ferreira',    value: 540 },
+    ];
+
+    const TOP_SERVICES = [
+      { label: 'Lavagem completa',  value: 17040 },
+      { label: 'Polimento técnico', value: 10640 },
+      { label: 'Lavagem + cera',    value: 10080 },
+      { label: 'Higienização interna', value: 4320 },
+      { label: 'Lavagem simples',   value: 5880 },
+    ];
+
+    function RelatoriosApp() {
+      const [period] = useState('30 dias');
+      useEffect(() => { lucide.createIcons(); });
+      useEffect(() => {
+        if (window !== window.top) return;
+        Promise.all([
+          document.fonts.ready,
+          new Promise(r => setTimeout(r, 500)),
+        ]).then(() => window.print());
+      }, []);
+
+      const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      const kpis = [
+        { label: 'Receita no período', value: 'R$ 39.400,00', delta: '+8,2%' },
+        { label: 'Carros atendidos', value: '358', delta: '+12 vs. mês anterior' },
+        { label: 'Ticket médio', value: 'R$ 142,80', delta: '-2,1%' },
+        { label: 'Novos clientes', value: '24', delta: '+6 vs. mês anterior' },
+      ];
+
+      return (
+        <AppShell active="relatorios">
+          <PageTitle title="Relatórios" subtitle="Visão analítica do seu lava-jato">
+            <div className="lv-segmented">
+              {['7 dias', '30 dias', '12 meses'].map(p => (
+                <button key={p} className={p === period ? 'is-active' : ''} disabled>{p}</button>
+              ))}
+            </div>
+            <button className="lv-btn lv-btn--secondary" disabled><Icon name="download" size={16} /> Exportar PDF</button>
+          </PageTitle>
+
+          <div className="lv-kpi-row">
+            {kpis.map(k => (
+              <div key={k.label} className="lv-kpi">
+                <div className="lv-kpi__label">{k.label}</div>
+                <div className="lv-kpi__value">{k.value}</div>
+                <div className={`lv-kpi__delta ${k.delta.startsWith('-') ? 'is-down' : 'is-up'}`}>
+                  {k.delta.startsWith('-') ? '↓' : '↑'} {k.delta.replace(/^[-+]/, '')}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <RevenueChart data={REVENUE} />
+
+          <div className="lv-two-col">
+            <ServicesDonut data={SERVICES} />
+            <TopList title="Top clientes" subtitle="Por receita acumulada" items={TOP_CLIENTS} valueFmt={fmt} />
+          </div>
+          <TopList title="Serviços mais lucrativos" subtitle="Receita por categoria no período" items={TOP_SERVICES} valueFmt={fmt} />
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<RelatoriosApp />);
+  </script>
+</body>
+</html>

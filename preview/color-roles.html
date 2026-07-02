@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Role tokens</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: var(--font-sans); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--fg-tertiary); margin-bottom: 10px; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
+  .chip { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border-default); flex: none; }
+  .meta { display: flex; flex-direction: column; }
+  .name { font-size: 12px; font-weight: 500; color: var(--fg-primary); }
+  .value { font-size: 10px; font-family: var(--font-mono); color: var(--fg-tertiary); }
+</style></head><body>
+<div class="grid">
+  <div>
+    <div class="section-title">Foreground</div>
+    <div class="row"><div class="chip" style="background:#0F172A"></div><div class="meta"><span class="name">fg-primary</span><span class="value">slate-900</span></div></div>
+    <div class="row"><div class="chip" style="background:#334155"></div><div class="meta"><span class="name">fg-secondary</span><span class="value">slate-700</span></div></div>
+    <div class="row"><div class="chip" style="background:#64748B"></div><div class="meta"><span class="name">fg-tertiary</span><span class="value">slate-500</span></div></div>
+    <div class="row"><div class="chip" style="background:#94A3B8"></div><div class="meta"><span class="name">fg-muted</span><span class="value">slate-400</span></div></div>
+    <div class="row"><div class="chip" style="background:#0284C7"></div><div class="meta"><span class="name">fg-link</span><span class="value">sky-600</span></div></div>
+  </div>
+  <div>
+    <div class="section-title">Background &amp; Border</div>
+    <div class="row"><div class="chip" style="background:#FAFBFC"></div><div class="meta"><span class="name">bg-app</span><span class="value">#FAFBFC</span></div></div>
+    <div class="row"><div class="chip" style="background:#FFFFFF"></div><div class="meta"><span class="name">bg-surface</span><span class="value">#FFFFFF</span></div></div>
+    <div class="row"><div class="chip" style="background:#F8FAFC"></div><div class="meta"><span class="name">bg-subtle</span><span class="value">slate-50</span></div></div>
+    <div class="row"><div class="chip" style="background:#0EA5E9"></div><div class="meta"><span class="name">bg-brand</span><span class="value">sky-500</span></div></div>
+    <div class="row"><div class="chip" style="background:#E2E8F0"></div><div class="meta"><span class="name">border-default</span><span class="value">slate-200</span></div></div>
+  </div>
+</div>
+</body></html>

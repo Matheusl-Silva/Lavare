@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Agenda</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="WeekCalendar.jsx"></script>
+  <script type="text/babel" src="AppointmentModal.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const DAYS = [
+      { dow: 'Seg', date: '12', today: false },
+      { dow: 'Ter', date: '13', today: false },
+      { dow: 'Qua', date: '14', today: true },
+      { dow: 'Qui', date: '15', today: false },
+      { dow: 'Sex', date: '16', today: false },
+      { dow: 'Sáb', date: '17', today: false },
+    ];
+
+    const EVENTS = [
+      // Segunda
+      { id: 'a1', day: 0, start: 8,    duration: 1,   service: 'Lavagem completa',     plate: 'ABC1D23' },
+      { id: 'a2', day: 0, start: 10.5, duration: 1.5, service: 'Polimento técnico',    plate: 'DEF2G34' },
+      { id: 'a3', day: 0, start: 14,   duration: 1,   service: 'Higienização interna', plate: 'GHI3J45' },
+      // Terça
+      { id: 'b1', day: 1, start: 9,    duration: 0.75, service: 'Lavagem simples',     plate: 'JKL4M56' },
+      { id: 'b2', day: 1, start: 11,   duration: 1,    service: 'Lavagem + cera',      plate: 'NOP5Q67' },
+      { id: 'b3', day: 1, start: 15.5, duration: 1,    service: 'Lavagem completa',    plate: 'RST6U78' },
+      // Quarta (hoje)
+      { id: 'c1', day: 2, start: 8.5,  duration: 1,    service: 'Lavagem completa',    plate: 'ABC1D23' },
+      { id: 'c2', day: 2, start: 10,   duration: 2,    service: 'Polimento técnico',   plate: 'GHI3J45' },
+      { id: 'c3', day: 2, start: 13.5, duration: 0.75, service: 'Lavagem simples',     plate: 'UVW7X89' },
+      { id: 'c4', day: 2, start: 16,   duration: 1,    service: 'Higienização interna',plate: 'DEF2G34' },
+      // Quinta
+      { id: 'd1', day: 3, start: 9.5,  duration: 1,    service: 'Lavagem + cera',      plate: 'JKL4M56' },
+      { id: 'd2', day: 3, start: 13,   duration: 1,    service: 'Lavagem completa',    plate: 'NOP5Q67' },
+      { id: 'd3', day: 3, start: 15,   duration: 1.5,  service: 'Polimento técnico',   plate: 'RST6U78' },
+      // Sexta
+      { id: 'e1', day: 4, start: 8,    duration: 0.75, service: 'Lavagem simples',     plate: 'ABC1D23' },
+      { id: 'e2', day: 4, start: 10,   duration: 1,    service: 'Lavagem completa',    plate: 'GHI3J45' },
+      { id: 'e3', day: 4, start: 11.5, duration: 1,    service: 'Higienização interna',plate: 'UVW7X89' },
+      { id: 'e4', day: 4, start: 14.5, duration: 1,    service: 'Lavagem + cera',      plate: 'DEF2G34' },
+      // Sábado
+      { id: 'f1', day: 5, start: 8.5,  duration: 1,    service: 'Lavagem completa',    plate: 'NOP5Q67' },
+      { id: 'f2', day: 5, start: 9.5,  duration: 1,    service: 'Lavagem completa',    plate: 'JKL4M56' },
+      { id: 'f3', day: 5, start: 11,   duration: 2,    service: 'Polimento técnico',   plate: 'RST6U78' },
+    ];
+
+    const LEGEND = [
+      { label: 'Lavagem completa', cls: 'completa',  color: 'var(--brand-500)' },
+      { label: 'Lavagem simples',  cls: 'simples',   color: '#06B6D4' },
+      { label: 'Polimento',        cls: 'polimento', color: '#6366F1' },
+      { label: 'Higienização',     cls: 'estetica',  color: 'var(--success-500)' },
+      { label: 'Lavagem + cera',   cls: 'cera',      color: 'var(--warning-500)' },
+    ];
+
+    function AgendaApp() {
+      const [events, setEvents] = useState(EVENTS);
+      const [modal, setModal] = useState(false);
+      const [toast, setToast] = useState(null);
+
+      useEffect(() => { lucide.createIcons(); }, [events, modal, toast]);
+      useEffect(() => { if (toast) { const t = setTimeout(() => setToast(null), 2400); return () => clearTimeout(t); } }, [toast]);
+
+      const todayCount = events.filter(e => e.day === 2).length;
+      const weekCount = events.length;
+
+      const kpis = [
+        { label: 'Agendamentos na semana', value: weekCount.toString() },
+        { label: 'Hoje (qua, 14 mai)', value: todayCount.toString(), sub: 'próximo às 08:30' },
+        { label: 'Taxa de ocupação', value: '68%', sub: 'média da semana' },
+        { label: 'Horário de pico', value: '10–12h', sub: 'maior demanda' },
+      ];
+
+      const handleSave = (appt) => {
+        const [h, m] = appt.time.split(':').map(Number);
+        setEvents(prev => [...prev, {
+          id: 'new-' + Date.now(),
+          day: appt.day,
+          start: h + m / 60,
+          duration: 1,
+          service: appt.service,
+          plate: appt.plate,
+        }]);
+        setToast('Agendamento criado');
+      };
+
+      return (
+        <AppShell active="agenda">
+          <PageTitle title="Agenda" subtitle="Agendamentos da semana por serviço e horário">
+            <div className="lv-segmented">
+              <button><Icon name="chevron-left" size={16} /></button>
+              <button className="is-active">12–17 mai</button>
+              <button><Icon name="chevron-right" size={16} /></button>
+            </div>
+            <button className="lv-btn lv-btn--secondary"><Icon name="calendar-days" size={16} /> Hoje</button>
+            <button className="lv-btn lv-btn--primary" onClick={() => setModal(true)}>
+              <Icon name="plus" size={16} stroke={2} /> Novo agendamento
+            </button>
+          </PageTitle>
+
+          <div className="lv-kpi-row">
+            {kpis.map(k => (
+              <div key={k.label} className="lv-kpi">
+                <div className="lv-kpi__label">{k.label}</div>
+                <div className="lv-kpi__value">{k.value}</div>
+                {k.sub && <div className="lv-kpi__delta lv-kpi__delta-period">{k.sub}</div>}
+              </div>
+            ))}
+          </div>
+
+          <div className="lv-cal-legend" style={{ marginBottom: 16 }}>
+            {LEGEND.map(l => (
+              <span key={l.cls} className="lv-cal-legend__item">
+                <span className="lv-cal-legend__sw" style={{ background: l.color }}></span>{l.label}
+              </span>
+            ))}
+          </div>
+
+          <WeekCalendar days={DAYS} events={events} />
+
+          <AppointmentModal open={modal} onClose={() => setModal(false)} onSave={handleSave} />
+
+          {toast && (
+            <div className="lv-toast"><Icon name="check-circle-2" size={16} /><span>{toast}</span></div>
+          )}
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<AgendaApp />);
+  </script>
+</body>
+</html>

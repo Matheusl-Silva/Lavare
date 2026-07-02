@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · Caixa</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="CaixaPanels.jsx"></script>
+  <script type="text/babel" src="CloseCaixaModal.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    const OPS = [
+      { id: 1, type: 'in',  time: '14:32', desc: 'Lavagem completa',        method: 'Pix',      plate: 'ABC1D23', amount: 120 },
+      { id: 2, type: 'in',  time: '13:15', desc: 'Polimento técnico',       method: 'Cartão',   plate: 'DEF2G34', amount: 280 },
+      { id: 3, type: 'out', time: '11:48', desc: 'Reposição de shampoo',    method: 'Dinheiro', plate: null,      amount: 180 },
+      { id: 4, type: 'in',  time: '10:22', desc: 'Lavagem simples',         method: 'Pix',      plate: 'GHI3J45', amount: 60 },
+      { id: 5, type: 'in',  time: '09:48', desc: 'Lavagem + cera',          method: 'Dinheiro', plate: 'JKL4M56', amount: 95 },
+      { id: 6, type: 'in',  time: '09:10', desc: 'Higienização interna',    method: 'Débito',   plate: 'NOP5Q67', amount: 180 },
+      { id: 7, type: 'out', time: '08:48', desc: 'Sangria — depósito banco',method: 'Dinheiro', plate: null,      amount: 300 },
+      { id: 8, type: 'in',  time: '08:30', desc: 'Lavagem completa',        method: 'Pix',      plate: 'RST6U78', amount: 120 },
+    ];
+
+    function CaixaApp() {
+      const [closed, setClosed] = useState(false);
+      const [modal, setModal] = useState(false);
+      const [toast, setToast] = useState(null);
+
+      useEffect(() => { lucide.createIcons(); }, [closed, modal, toast]);
+      useEffect(() => { if (toast) { const t = setTimeout(() => setToast(null), 2600); return () => clearTimeout(t); } }, [toast]);
+
+      const totals = useMemo(() => {
+        const inSum  = OPS.filter(o => o.type === 'in').reduce((s, o) => s + o.amount, 0);
+        const outSum = OPS.filter(o => o.type === 'out').reduce((s, o) => s + o.amount, 0);
+        const opening = 200;
+        return { inSum, outSum, opening, balance: opening + inSum - outSum, count: OPS.length };
+      }, []);
+
+      // Dinheiro em espécie esperado = abertura + entradas dinheiro − saídas dinheiro
+      const cashExpected = useMemo(() => {
+        const cashIn = OPS.filter(o => o.type === 'in' && o.method === 'Dinheiro').reduce((s, o) => s + o.amount, 0);
+        const cashOut = OPS.filter(o => o.type === 'out' && o.method === 'Dinheiro').reduce((s, o) => s + o.amount, 0);
+        return totals.opening + cashIn - cashOut;
+      }, [totals]);
+
+      const methods = useMemo(() => {
+        const defs = [
+          { label: 'Pix',                icon: 'qr-code' },
+          { label: 'Dinheiro',           icon: 'banknote' },
+          { label: 'Cartão de crédito',  icon: 'credit-card', match: 'Cartão' },
+          { label: 'Débito',             icon: 'credit-card' },
+        ];
+        return defs.map(d => {
+          const key = d.match || d.label;
+          const list = OPS.filter(o => o.type === 'in' && o.method === key);
+          return { label: d.label, icon: d.icon, count: list.length, value: list.reduce((s, o) => s + o.amount, 0) };
+        });
+      }, []);
+
+      const fmt = v => 'R$ ' + v.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+
+      const kpis = [
+        { label: 'Saldo em caixa', value: fmt(totals.balance), sub: `abertura ${fmt(totals.opening)}` },
+        { label: 'Entradas hoje',  value: fmt(totals.inSum), cls: 'is-up', delta: `${OPS.filter(o=>o.type==='in').length} operações` },
+        { label: 'Saídas hoje',    value: fmt(totals.outSum), cls: 'is-down', delta: `${OPS.filter(o=>o.type==='out').length} operações` },
+        { label: 'Operações',      value: totals.count.toString(), sub: 'desde a abertura' },
+      ];
+
+      return (
+        <AppShell active="caixa">
+          <PageTitle title="Caixa" subtitle="Movimentação de caixa do dia · 14 mai">
+            <div className={`lv-caixa-status ${closed ? 'lv-caixa-status--closed' : ''}`}>
+              <span className="lv-dot"></span>
+              {closed ? 'Caixa fechado às 18:04' : 'Aberto desde 08:12'}
+            </div>
+            <button className="lv-btn lv-btn--secondary"><Icon name="plus-minus" size={16} /> Sangria / suprimento</button>
+            <button className="lv-btn lv-btn--primary" onClick={() => setModal(true)} disabled={closed}>
+              <Icon name="lock" size={16} /> Fechar caixa
+            </button>
+          </PageTitle>
+
+          <div className="lv-kpi-row">
+            {kpis.map(k => (
+              <div key={k.label} className="lv-kpi">
+                <div className="lv-kpi__label">{k.label}</div>
+                <div className="lv-kpi__value">{k.value}</div>
+                {k.delta && <div className={`lv-kpi__delta ${k.cls}`}>{k.cls === 'is-up' ? '↑' : '↓'} {k.delta}</div>}
+                {k.sub && <div className="lv-kpi__delta lv-kpi__delta-period">{k.sub}</div>}
+              </div>
+            ))}
+          </div>
+
+          <div className="lv-caixa-grid">
+            <OperationsList ops={OPS} />
+            <MethodBreakdown methods={methods} />
+          </div>
+
+          <CloseCaixaModal
+            open={modal}
+            onClose={() => setModal(false)}
+            expected={cashExpected}
+            onConfirm={() => { setClosed(true); setToast('Caixa fechado com sucesso'); }}
+          />
+
+          {toast && (
+            <div className="lv-toast"><Icon name="check-circle-2" size={16} /><span>{toast}</span></div>
+          )}
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<CaixaApp />);
+  </script>
+</body>
+</html>

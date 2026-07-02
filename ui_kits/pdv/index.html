@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title>Lavare · PDV</title>
+  <link rel="icon" href="../../assets/favicon.svg">
+  <link rel="stylesheet" href="../../colors_and_type.css">
+  <link rel="stylesheet" href="../kit.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="AppShell.jsx"></script>
+  <script type="text/babel" src="Catalog.jsx"></script>
+  <script type="text/babel" src="CartPanel.jsx"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const CATALOG = [
+      { id: 's1', kind: 'servico', name: 'Lavagem simples',      price: 60,  dur: '20 min', icon: 'droplets' },
+      { id: 's2', kind: 'servico', name: 'Lavagem completa',     price: 120, dur: '45 min', icon: 'car' },
+      { id: 's3', kind: 'servico', name: 'Lavagem + cera',       price: 95,  dur: '50 min', icon: 'sparkles' },
+      { id: 's4', kind: 'servico', name: 'Polimento técnico',    price: 280, dur: '90 min', icon: 'disc-3' },
+      { id: 's5', kind: 'servico', name: 'Higienização interna', price: 180, dur: '60 min', icon: 'spray-can' },
+      { id: 's6', kind: 'servico', name: 'Enceramento',          price: 70,  dur: '30 min', icon: 'shield' },
+      { id: 'p1', kind: 'produto', name: 'Aromatizante',         price: 15,  icon: 'wind' },
+      { id: 'p2', kind: 'produto', name: 'Pretinho aplicado',    price: 20,  icon: 'circle' },
+      { id: 'p3', kind: 'produto', name: 'Cera spray',           price: 35,  icon: 'spray-can' },
+      { id: 'p4', kind: 'produto', name: 'Hidratação de couro',  price: 90,  icon: 'armchair' },
+      { id: 'p5', kind: 'produto', name: 'Cristalização vidros', price: 120, icon: 'square' },
+      { id: 'p6', kind: 'produto', name: 'Lavagem de motor',     price: 80,  icon: 'cog' },
+    ];
+
+    function PdvApp() {
+      const [category, setCategory] = useState('todos');
+      const [cart, setCart] = useState([
+        { id: 's2', name: 'Lavagem completa', price: 120, qty: 1 },
+        { id: 'p1', name: 'Aromatizante', price: 15, qty: 1 },
+      ]);
+      const [plate, setPlate] = useState('ABC1D23');
+      const [customer, setCustomer] = useState('Marcos Silva');
+      const [method, setMethod] = useState('Pix');
+      const [toast, setToast] = useState(null);
+
+      useEffect(() => { lucide.createIcons(); }, [category, cart, method, toast]);
+      useEffect(() => { if (toast) { const t = setTimeout(() => setToast(null), 2600); return () => clearTimeout(t); } }, [toast]);
+
+      const add = (item) => {
+        setCart(prev => {
+          const ex = prev.find(c => c.id === item.id);
+          if (ex) return prev.map(c => c.id === item.id ? { ...c, qty: c.qty + 1 } : c);
+          return [...prev, { id: item.id, name: item.name, price: item.price, qty: 1 }];
+        });
+      };
+      const inc = (id) => setCart(prev => prev.map(c => c.id === id ? { ...c, qty: c.qty + 1 } : c));
+      const dec = (id) => setCart(prev => prev.flatMap(c => c.id === id ? (c.qty > 1 ? [{ ...c, qty: c.qty - 1 }] : []) : [c]));
+
+      const checkout = () => {
+        setToast(`Venda finalizada · ${method}`);
+        setCart([]); setPlate(''); setCustomer('');
+      };
+
+      return (
+        <AppShell active="pdv">
+          <PageTitle title="PDV" subtitle="Monte o pedido e finalize a venda">
+            <button className="lv-btn lv-btn--secondary"><Icon name="history" size={16} /> Últimas vendas</button>
+          </PageTitle>
+
+          <div className="lv-pdv">
+            <Catalog category={category} onCategory={setCategory} items={CATALOG} onAdd={add} />
+            <CartPanel
+              cart={cart}
+              onInc={inc} onDec={dec}
+              plate={plate} onPlate={setPlate}
+              customer={customer} onCustomer={setCustomer}
+              method={method} onMethod={setMethod}
+              onCheckout={checkout}
+            />
+          </div>
+
+          {toast && (
+            <div className="lv-toast"><Icon name="check-circle-2" size={16} /><span>{toast}</span></div>
+          )}
+        </AppShell>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<PdvApp />);
+  </script>
+</body>
+</html>

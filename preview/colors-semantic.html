@@ -1,0 +1,57 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Cores semânticas" subtitle="Success · Warning · Danger · Info" viewport="700x200" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Semantic colors</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); }
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .item { border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 14px 16px; }
+  .item .name { font: 600 12px/1 var(--font-sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg-subtle); margin-bottom: 10px; }
+  .pair { display: flex; align-items: center; gap: 10px; }
+  .dot { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px solid var(--border-default); }
+  .meta { display: flex; flex-direction: column; }
+  .meta .label { font: 500 13px/1.2 var(--font-sans); color: var(--fg-default); }
+  .meta .hex { font: 500 11px/1.2 var(--font-mono); color: var(--fg-muted); }
+  .stack { display: flex; flex-direction: column; gap: 8px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="item">
+      <div class="name">Success</div>
+      <div class="stack">
+        <div class="pair"><div class="dot" style="background:#ECFDF5"></div><div class="meta"><span class="label">50</span><span class="hex">#ECFDF5</span></div></div>
+        <div class="pair"><div class="dot" style="background:#10B981"></div><div class="meta"><span class="label">500</span><span class="hex">#10B981</span></div></div>
+        <div class="pair"><div class="dot" style="background:#047857"></div><div class="meta"><span class="label">700</span><span class="hex">#047857</span></div></div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="name">Warning</div>
+      <div class="stack">
+        <div class="pair"><div class="dot" style="background:#FFFBEB"></div><div class="meta"><span class="label">50</span><span class="hex">#FFFBEB</span></div></div>
+        <div class="pair"><div class="dot" style="background:#F59E0B"></div><div class="meta"><span class="label">500</span><span class="hex">#F59E0B</span></div></div>
+        <div class="pair"><div class="dot" style="background:#B45309"></div><div class="meta"><span class="label">700</span><span class="hex">#B45309</span></div></div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="name">Danger</div>
+      <div class="stack">
+        <div class="pair"><div class="dot" style="background:#FEF2F2"></div><div class="meta"><span class="label">50</span><span class="hex">#FEF2F2</span></div></div>
+        <div class="pair"><div class="dot" style="background:#EF4444"></div><div class="meta"><span class="label">500</span><span class="hex">#EF4444</span></div></div>
+        <div class="pair"><div class="dot" style="background:#B91C1C"></div><div class="meta"><span class="label">700</span><span class="hex">#B91C1C</span></div></div>
+      </div>
+    </div>
+    <div class="item">
+      <div class="name">Info</div>
+      <div class="stack">
+        <div class="pair"><div class="dot" style="background:#F0F9FF"></div><div class="meta"><span class="label">50</span><span class="hex">#F0F9FF</span></div></div>
+        <div class="pair"><div class="dot" style="background:#0EA5E9"></div><div class="meta"><span class="label">500</span><span class="hex">#0EA5E9</span></div></div>
+        <div class="pair"><div class="dot" style="background:#0369A1"></div><div class="meta"><span class="label">700</span><span class="hex">#0369A1</span></div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

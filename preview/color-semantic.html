@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Semantic</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: #fff; font-family: var(--font-sans); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .col { display: flex; flex-direction: column; gap: 8px; }
+  .head { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--fg-tertiary); }
+  .desc { font-size: 11px; color: var(--fg-tertiary); }
+  .swatches { display: flex; gap: 4px; }
+  .sw { flex: 1; height: 44px; border-radius: 6px; display: flex; align-items: flex-end; justify-content: flex-end; padding: 4px 6px; font-size: 9px; font-family: var(--font-mono); }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; align-self: flex-start; }
+  .dot { width: 6px; height: 6px; border-radius: 999px; }
+</style></head><body>
+  <div class="grid">
+    <div class="col">
+      <span class="head">Success</span>
+      <div class="badge" style="background:#F0FDF4;color:#166534"><span class="dot" style="background:#16A34A"></span>Pago</div>
+      <div class="swatches">
+        <div class="sw" style="background:#F0FDF4;color:#166534">50</div>
+        <div class="sw" style="background:#DCFCE7;color:#166534">100</div>
+        <div class="sw" style="background:#16A34A;color:#fff">500</div>
+        <div class="sw" style="background:#15803D;color:#fff">600</div>
+        <div class="sw" style="background:#166534;color:#fff">700</div>
+      </div>
+      <span class="desc">Confirmações, pagamentos recebidos, lavagem concluída.</span>
+    </div>
+    <div class="col">
+      <span class="head">Warning</span>
+      <div class="badge" style="background:#FFFBEB;color:#B45309"><span class="dot" style="background:#F59E0B"></span>Estoque baixo</div>
+      <div class="swatches">
+        <div class="sw" style="background:#FFFBEB;color:#B45309">50</div>
+        <div class="sw" style="background:#FEF3C7;color:#B45309">100</div>
+        <div class="sw" style="background:#F59E0B;color:#fff">500</div>
+        <div class="sw" style="background:#D97706;color:#fff">600</div>
+        <div class="sw" style="background:#B45309;color:#fff">700</div>
+      </div>
+      <span class="desc">Alertas não-bloqueantes. Estoque baixo, pendência.</span>
+    </div>
+    <div class="col">
+      <span class="head">Danger</span>
+      <div class="badge" style="background:#FEF2F2;color:#991B1B"><span class="dot" style="background:#DC2626"></span>Pagamento atrasado</div>
+      <div class="swatches">
+        <div class="sw" style="background:#FEF2F2;color:#991B1B">50</div>
+        <div class="sw" style="background:#FEE2E2;color:#991B1B">100</div>
+        <div class="sw" style="background:#DC2626;color:#fff">500</div>
+        <div class="sw" style="background:#B91C1C;color:#fff">600</div>
+        <div class="sw" style="background:#991B1B;color:#fff">700</div>
+      </div>
+      <span class="desc">Erros, atraso, ações destrutivas.</span>
+    </div>
+  </div>
+</body></html>

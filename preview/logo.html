@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br"><head><meta charset="utf-8"><title>Logo</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px; background: #fff; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: center; }
+  .swatch { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+  .label { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-tertiary); font-weight: 500; }
+  .stage { padding: 24px; border-radius: 10px; border: 1px solid var(--border-default); width: 100%; box-sizing: border-box; display: flex; align-items: center; justify-content: center; min-height: 90px; }
+  .stage.dark { background: var(--slate-900); border-color: var(--slate-800); }
+  .stage.brand { background: var(--sky-500); border-color: var(--sky-500); }
+  img { height: 36px; display: block; }
+</style></head><body>
+  <div class="swatch">
+    <div class="label">Logo · Light</div>
+    <div class="stage"><img src="../assets/logo.svg" alt="Lavare"></div>
+  </div>
+  <div class="swatch">
+    <div class="label">Logo · Reverse</div>
+    <div class="stage dark"><img src="../assets/logo-white.svg" alt="Lavare"></div>
+  </div>
+  <div class="swatch">
+    <div class="label">Mark only</div>
+    <div class="stage"><img src="../assets/logo-mark.svg" alt="Lavare" style="height:48px"></div>
+  </div>
+  <div class="swatch">
+    <div class="label">On brand</div>
+    <div class="stage brand"><img src="../assets/logo-white.svg" alt="Lavare"></div>
+  </div>
+</body></html>

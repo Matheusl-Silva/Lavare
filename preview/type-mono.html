@@ -1,0 +1,41 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Type · mono & tabular" subtitle="JetBrains Mono · números tabulares" viewport="700x230" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Mono & tabular</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 28px; background: var(--bg-surface); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .group h5 { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); margin: 0 0 12px; }
+  .stack > div { padding: 8px 0; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .stack > div:last-child { border: 0; }
+  .v { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 16px; color: var(--fg-default); font-weight: 500; }
+  .l { font: 400 12px/1 var(--font-sans); color: var(--fg-muted); }
+  .code { background: var(--slate-100); padding: 4px 6px; border-radius: 4px; font: 500 12px/1 var(--font-mono); color: var(--slate-700); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="group">
+      <h5>Dinheiro · tabular</h5>
+      <div class="stack">
+        <div><span class="v">R$&nbsp;1.250,00</span><span class="l">Entrada</span></div>
+        <div><span class="v">R$&nbsp;&nbsp;&nbsp;850,50</span><span class="l">Entrada</span></div>
+        <div><span class="v">R$&nbsp;3.420,00</span><span class="l">Entrada</span></div>
+        <div><span class="v" style="color:#B91C1C">−&nbsp;R$&nbsp;180,00</span><span class="l">Saída</span></div>
+      </div>
+    </div>
+    <div class="group">
+      <h5>Mono · uso técnico</h5>
+      <div class="stack">
+        <div><span class="v">ABC1D23</span><span class="l">Placa Mercosul</span></div>
+        <div><span class="v">14/05/2026</span><span class="l">Data</span></div>
+        <div><span class="v">14:30</span><span class="l">Horário</span></div>
+        <div><span class="code">--brand-500</span><span class="l">Token CSS</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

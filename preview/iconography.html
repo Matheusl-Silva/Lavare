@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Iconografia (Lucide)" subtitle="Stroke 1.75 · 16/18/20/24px" viewport="700x200" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Iconografia</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); }
+  .label { font: 600 11px/1 var(--font-sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-subtle); margin-bottom: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px 12px; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .cell i { width: 22px; height: 22px; color: var(--slate-700); }
+  .cell svg { width: 22px; height: 22px; stroke-width: 1.75; color: var(--slate-700); }
+  .name { font: 400 10px/1 var(--font-sans); color: var(--fg-muted); }
+  .row2 { display: flex; gap: 18px; align-items: center; margin-top: 20px; }
+  .size-demo { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .size-demo svg { color: var(--brand-500); stroke-width: 1.75; }
+</style>
+</head>
+<body>
+  <div class="label">Lucide · stroke 1.75 · slate-700</div>
+  <div class="grid">
+    <div class="cell"><i data-lucide="home"></i><span class="name">home</span></div>
+    <div class="cell"><i data-lucide="wallet"></i><span class="name">wallet</span></div>
+    <div class="cell"><i data-lucide="package"></i><span class="name">package</span></div>
+    <div class="cell"><i data-lucide="car"></i><span class="name">car</span></div>
+    <div class="cell"><i data-lucide="users"></i><span class="name">users</span></div>
+    <div class="cell"><i data-lucide="bar-chart-3"></i><span class="name">chart</span></div>
+    <div class="cell"><i data-lucide="settings"></i><span class="name">settings</span></div>
+    <div class="cell"><i data-lucide="search"></i><span class="name">search</span></div>
+    <div class="cell"><i data-lucide="bell"></i><span class="name">bell</span></div>
+    <div class="cell"><i data-lucide="plus"></i><span class="name">plus</span></div>
+    <div class="cell"><i data-lucide="filter"></i><span class="name">filter</span></div>
+    <div class="cell"><i data-lucide="more-horizontal"></i><span class="name">more</span></div>
+  </div>
+  <div class="row2">
+    <div class="size-demo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg><span class="name">16</span></div>
+    <div class="size-demo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg><span class="name">18</span></div>
+    <div class="size-demo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg><span class="name">20</span></div>
+    <div class="size-demo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/></svg><span class="name">24</span></div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

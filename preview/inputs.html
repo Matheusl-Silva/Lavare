@@ -1,0 +1,55 @@
+<!doctype html>
+<!-- @dsCard group="Brand" name="Form inputs" subtitle="Text input, select, prefix, erro" viewport="700x260" -->
+<html lang="pt-br">
+<head>
+<meta charset="utf-8">
+<title>Inputs</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin: 0; padding: 24px; background: var(--bg-surface); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 20px; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .label { font: 500 13px/1 var(--font-sans); color: var(--fg-default); }
+  .hint  { font: 400 12px/1.4 var(--font-sans); color: var(--fg-muted); }
+  .input, .select {
+    font: 400 14px/1 var(--font-sans);
+    color: var(--fg-default);
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-default);
+    background: #fff;
+    outline: none;
+    transition: box-shadow var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
+  }
+  .input::placeholder { color: var(--fg-subtle); }
+  .input:focus, .select:focus { border-color: var(--brand-500); box-shadow: 0 0 0 3px rgba(14,165,233,0.18); }
+  .input.error { border-color: var(--danger-500); }
+  .input.error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,0.18); }
+  .err { font: 400 12px/1.4 var(--font-sans); color: var(--danger-700); }
+  .with-prefix { position: relative; }
+  .with-prefix .prefix { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--fg-muted); font: 400 14px/1 var(--font-sans); }
+  .with-prefix .input { padding-left: 32px; }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="field">
+      <span class="label">Descrição</span>
+      <input class="input" placeholder="Ex.: Lavagem completa">
+    </div>
+    <div class="field">
+      <span class="label">Valor</span>
+      <div class="with-prefix"><span class="prefix">R$</span><input class="input" value="120,00"></div>
+    </div>
+    <div class="field">
+      <span class="label">Forma de pagamento</span>
+      <select class="select"><option>Pix</option><option>Dinheiro</option><option>Cartão</option></select>
+    </div>
+    <div class="field">
+      <span class="label">Placa do veículo</span>
+      <input class="input error" value="ABC-123">
+      <span class="err">Formato inválido. Use ABC1D23.</span>
+    </div>
+  </div>
+</body>
+</html>

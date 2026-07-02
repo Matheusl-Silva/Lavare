@@ -1,0 +1,192 @@
+/* =====================================================================
+   Lavare — Design Tokens
+   Cor, tipo, espaço, raio, sombra, motion. Modo claro apenas.
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ---------- Color: brand ---------- */
+  --brand-50:  #F0F9FF;
+  --brand-100: #E0F2FE;
+  --brand-200: #BAE6FD;
+  --brand-300: #7DD3FC;
+  --brand-400: #38BDF8;
+  --brand-500: #0EA5E9;  /* primary */
+  --brand-600: #0284C7;
+  --brand-700: #0369A1;
+  --brand-800: #075985;
+  --brand-900: #0C4A6E;
+
+  /* ---------- Color: neutrals (slate) ---------- */
+  --slate-50:  #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0;
+  --slate-300: #CBD5E1;
+  --slate-400: #94A3B8;
+  --slate-500: #64748B;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1E293B;
+  --slate-900: #0F172A;
+
+  /* ---------- Color: semantic ---------- */
+  --success-50:  #ECFDF5;
+  --success-500: #10B981;
+  --success-700: #047857;
+  --warning-50:  #FFFBEB;
+  --warning-500: #F59E0B;
+  --warning-700: #B45309;
+  --danger-50:   #FEF2F2;
+  --danger-500:  #EF4444;
+  --danger-700:  #B91C1C;
+  --info-50:     #F0F9FF;
+  --info-500:    #0EA5E9;
+
+  /* ---------- Semantic surfaces & text ---------- */
+  --bg-page:        var(--slate-50);
+  --bg-surface:     #FFFFFF;
+  --bg-surface-2:   var(--slate-50);
+  --bg-muted:       var(--slate-100);
+  --bg-selected:    #EFF6FF;
+  --bg-overlay:     rgba(15, 23, 42, 0.4);
+
+  --fg-default:     var(--slate-900);
+  --fg-muted:       var(--slate-600);
+  --fg-subtle:      var(--slate-400);
+  --fg-on-brand:    #FFFFFF;
+  --fg-link:        var(--brand-600);
+
+  --border-default: var(--slate-200);
+  --border-strong:  var(--slate-300);
+  --border-subtle:  var(--slate-100);
+  --border-focus:   var(--brand-500);
+
+  /* ---------- Type: families ---------- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* ---------- Type: scale ---------- */
+  --text-display: 32px;
+  --text-h1:      24px;
+  --text-h2:      20px;
+  --text-h3:      18px;
+  --text-body:    14px;
+  --text-small:   13px;
+  --text-caption: 12px;
+
+  --leading-tight: 1.2;
+  --leading-snug:  1.35;
+  --leading-base:  1.5;
+
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.04em;
+
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ---------- Spacing (4px scale) ---------- */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---------- Radius ---------- */
+  --radius-xs:    4px;
+  --radius-sm:    6px;
+  --radius-md:    8px;   /* default (buttons, inputs, cards) */
+  --radius-lg:    12px;  /* modals, popovers */
+  --radius-xl:    16px;
+  --radius-pill:  999px;
+
+  /* ---------- Shadow / elevation ---------- */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-focus: 0 0 0 2px #FFFFFF, 0 0 0 4px var(--border-focus);
+
+  /* ---------- Layout ---------- */
+  --sidebar-width: 240px;
+  --header-height: 64px;
+  --content-max:   1280px;
+  --row-height:    44px;
+
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:   120ms;
+  --dur-base:   200ms;
+  --dur-slow:   320ms;
+}
+
+/* =====================================================================
+   Semantic typography helpers
+   ===================================================================== */
+.display, h1.display {
+  font: var(--weight-semibold) var(--text-display)/var(--leading-tight) var(--font-sans);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-default);
+}
+.h1, h1 {
+  font: var(--weight-semibold) var(--text-h1)/var(--leading-tight) var(--font-sans);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-default);
+}
+.h2, h2 {
+  font: var(--weight-semibold) var(--text-h2)/var(--leading-tight) var(--font-sans);
+  letter-spacing: var(--tracking-tight);
+  color: var(--fg-default);
+}
+.h3, h3 {
+  font: var(--weight-semibold) var(--text-h3)/var(--leading-snug) var(--font-sans);
+  color: var(--fg-default);
+}
+.body, p {
+  font: var(--weight-regular) var(--text-body)/var(--leading-base) var(--font-sans);
+  color: var(--fg-default);
+}
+.small {
+  font: var(--weight-regular) var(--text-small)/var(--leading-base) var(--font-sans);
+  color: var(--fg-muted);
+}
+.caption {
+  font: var(--weight-medium) var(--text-caption)/var(--leading-snug) var(--font-sans);
+  color: var(--fg-muted);
+}
+.overline {
+  font: var(--weight-semibold) var(--text-caption)/1.2 var(--font-sans);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+.mono, code, .tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* =====================================================================
+   Base reset (very light)
+   ===================================================================== */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--fg-default);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-base);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--fg-link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button { font-family: inherit; }
